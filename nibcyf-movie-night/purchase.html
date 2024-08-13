@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Summary</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        .container {
+            margin-top: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #whatsapp-btn {
+            background-color: #25D366; /* WhatsApp green */
+            color: white;
+        }
+
+        #whatsapp-btn:hover {
+            background-color: #128C7E; /* Darker green on hover */
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Ticket Summary</h2>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="alert alert-info">
+                    <p class="text-center"><strong>Summary:</strong></p>
+                    <p id="summary"></p>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="timer">
+                    Time left: <span id="countdown">10:00</span>
+                </div>
+
+                <h4>Account Details</h4>
+                <p>Please transfer the total amount to the following account details:</p>
+                <ul>
+                    <li><strong>Bank Name:</strong> OPAY</li>
+                    <li><strong>Account Name:</strong> AYANBISI VICTOR OLUDAPO</li>
+                    <li><strong>Account Number:</strong>9073114148</li>
+                </ul>
+                <div class="mt-4">
+                    <p>After transferring, click the button below to send the transaction receipt:</p>
+                    <a id="whatsapp-btn" class="btn btn-block" href="https://wa.me/?text=I%20have%20paid%20for%20movie%20tickets" target="_blank">Send Receipt</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; <span id="year"></span> Nibcyf - Movie Night<br>Developed by Larry Kay Designs </p>
+    </footer>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // ticket-summary.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const quantity = urlParams.get('quantity');
+            const totalCost = urlParams.get('totalCost');
+
+            document.getElementById('summary').textContent = `You have selected ${quantity} ticket(s) with a total cost of ${totalCost} Naira.`;
+
+            // Set the current year in the footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Check if the user refreshes the page or timer has expired
+            if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+                window.location.href = "https://tinyurl.com/nibcyf-movie-night";
+                return;
+            }
+
+            // Countdown timer logic
+            let minutes = 10;
+            let seconds = 0;
+
+            const countdownInterval = setInterval(function () {
+                document.getElementById('countdown').textContent = 
+                    minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
+                seconds--;
+
+                if (seconds < 0 && minutes > 0) {
+                    minutes--;
+                    seconds = 59;
+                }
+
+                if (minutes === 0 && seconds === 0) {
+                    clearInterval(countdownInterval);
+                    alert("Sorry, Time up.");
+                    window.location.href = "https://tinyurl.com/nibcyf-movie-night";
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

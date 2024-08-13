@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Purchase</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #camera-img {
+            width: 100px;
+            height: auto;
+            animation: zoom 20s infinite;
+        }
+
+        @keyframes zoom {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #content {
+            padding: 20px;
+            padding-bottom: 60px; /* Adjust padding to avoid overlap with footer */
+        }
+
+        #warning-note {
+            background-color: #ffcccc;
+            color: #d8000c;
+            border: 1px solid #d8000c;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #ticket-counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        #ticket-counter button {
+            font-size: 18px;
+        }
+
+        #ticket-quantity {
+            width: 60px;
+            text-align: center;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        #get-ticket-btn {
+            background-color: #dc3545; /* Bootstrap red color */
+            color: white;
+        }
+
+        #get-ticket-btn:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <img src="img/loader.png" alt="Camera" id="camera-img">
+    </div>
+    <div id="content" class="container" style="display: none;">
+        <header class="text-center mb-4">
+            <img src="img/ticket.jpg" alt="Movie Ticket" id="ticket-header" class="img-fluid">
+        </header>
+        <main>
+            <section id="warning-note">
+                <p><strong>Warning:</strong> This is the official site for purchasing tickets. Please do not purchase from unofficial sources.</p>
+            </section>
+            <section id="movie-details">
+                <h2 class="text-center">Movie Night Powered by NIBCYF</h2>
+                <p class="text-center">Price: <span id="ticket-price">500</span> Naira</p>
+                <div id="ticket-counter" class="text-center">
+                    <button id="decrease-btn" class="btn btn-outline-secondary">-</button>
+                    <input type="text" id="ticket-quantity" value="1" readonly class="form-control d-inline-block w-auto text-center">
+                    <button id="increase-btn" class="btn btn-outline-secondary">+</button>
+                </div>
+                <button id="get-ticket-btn" class="btn">Get Ticket</button>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; <span id="year"></span> Nibcyf - Movie Night<br>Developed by Larry Kay Designs </p>
+        </footer>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // scripts.js
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 20000); // 20 seconds
+
+            const decreaseBtn = document.getElementById('decrease-btn');
+            const increaseBtn = document.getElementById('increase-btn');
+            const quantityInput = document.getElementById('ticket-quantity');
+
+            let quantity = parseInt(quantityInput.value, 10);
+
+            decreaseBtn.addEventListener('click', () => {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityInput.value = quantity;
+                }
+            });
+
+            increaseBtn.addEventListener('click', () => {
+                quantity++;
+                quantityInput.value = quantity;
+            });
+
+            document.getElementById('get-ticket-btn').addEventListener('click', () => {
+                const ticketPrice = parseInt(document.getElementById('ticket-price').textContent, 10);
+                const totalCost = quantity * ticketPrice;
+                window.location.href = `purchase.html?quantity=${quantity}&totalCost=${totalCost}`;
+            });
+
+            // Set the current year in the footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
